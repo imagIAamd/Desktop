@@ -43,12 +43,11 @@ class _HomeState extends State<Home> {
                 controllerUrl: _controllerPasswd,
                 label: "Contrasenya",
                 secretField: true,
-                appData: appData,
-              ),
+                appData: appData,),
               SizedBox(height: 28),
               Container(
                   child: appData.isCharging
-                      ? Text('Charging...')
+                      ? Text('Charging...', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),)
                       : LoginButton(
                           appData: appData, controllerUrl: _controllerUrl))
             ],
