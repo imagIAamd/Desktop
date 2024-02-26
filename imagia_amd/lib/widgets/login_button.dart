@@ -8,10 +8,14 @@ class LoginButton extends StatelessWidget {
     super.key,
     required this.appData,
     required TextEditingController controllerUrl,
+    required this.controllerUser,
+    required this.controllerPasswd,
   }) : _controllerUrl = controllerUrl;
 
   final AppData appData;
   final TextEditingController _controllerUrl;
+  final TextEditingController controllerUser;
+  final TextEditingController controllerPasswd;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +23,11 @@ class LoginButton extends StatelessWidget {
       child: Text("Login"),
       elevation: 5,
       onPressed: () {
-        appData.setUrl(_controllerUrl.text);
+        appData.setInfo(
+          _controllerUrl.text,
+          controllerUser.text,
+          controllerPasswd.text
+        );
         appData.saveURL();
         appData.login();
       },

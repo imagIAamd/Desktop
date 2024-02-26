@@ -4,14 +4,11 @@ import 'package:imagia_amd/pages/home.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => AppData(),
-      child: MyApp(),
-    )
-  );
+  runApp(ChangeNotifierProvider(
+    create: (context) => AppData(),
+    child: MyApp(),
+  ));
 }
-
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
