@@ -19,15 +19,32 @@ class LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(
-      child: Text("Login"),
-      elevation: 5,
-      onPressed: () {
+    return GestureDetector(
+      child: Container(
+        padding: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          gradient: LinearGradient(
+            colors: <Color>[
+              Colors.blue[900]!,
+              Colors.blue[700]!
+            ], // Adjust colors
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Text(
+          "Login",
+          style: TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.white, // White text
+          ),
+        ),
+      ),
+      onTap: () {
         appData.setInfo(
-          _controllerUrl.text,
-          controllerUser.text,
-          controllerPasswd.text
-        );
+            _controllerUrl.text, controllerUser.text, controllerPasswd.text);
         appData.saveURL();
         appData.login();
       },

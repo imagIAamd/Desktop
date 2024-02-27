@@ -18,16 +18,19 @@ class BaseTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
+
     return Container(
       width: MediaQuery.of(context).size.width / 2,
       child: TextField(
         obscureText: secretField,
         enabled: !appData.isCharging,
-        decoration:
-            InputDecoration(border: OutlineInputBorder(), labelText: label),
+        decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: label),
         controller: _controllerUrl,
       ),
     );
   }
+
+  
 }

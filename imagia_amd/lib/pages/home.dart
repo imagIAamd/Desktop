@@ -17,9 +17,15 @@ class _HomeState extends State<Home> {
   TextEditingController _controllerPasswd = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    final data = Provider.of<AppData>(context, listen: false);
+    data.recoverURL(_controllerUrl);
+  }
+
+  @override
   Widget build(BuildContext context) {
     AppData appData = Provider.of<AppData>(context);
-    appData.recoverURL(_controllerUrl);
 
     return Scaffold(
       body: Center(
@@ -27,6 +33,12 @@ class _HomeState extends State<Home> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Text(
+                'Error',
+                style: TextStyle(
+                    color: appData.isInvalid ? Colors.red : Colors.transparent),
+              ),
+              SizedBox(height: 8,),
               BaseTextField(
                   controllerUrl: _controllerUrl,
                   label: "Url",
