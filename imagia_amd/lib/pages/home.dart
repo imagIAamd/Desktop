@@ -34,7 +34,7 @@ class _HomeState extends State<Home> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Error',
+                appData.errorMsn,
                 style: TextStyle(
                     color: appData.isInvalid ? Colors.red : Colors.transparent),
               ),
@@ -61,7 +61,7 @@ class _HomeState extends State<Home> {
               Container(
                   child: appData.isCharging
                       ? Text(
-                          'Charging...',
+                          'Loading...',
                           style: TextStyle(
                               color: Colors.red, fontWeight: FontWeight.bold),
                         )

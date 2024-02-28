@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:imagia_amd/other/app_pages.dart';
 import 'package:imagia_amd/other/appdata.dart';
 import 'package:imagia_amd/widgets/base_text_field.dart';
 import 'package:provider/provider.dart';
@@ -25,10 +26,7 @@ class LoginButton extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           gradient: LinearGradient(
-            colors: <Color>[
-              Colors.blue[900]!,
-              Colors.blue[700]!
-            ], // Adjust colors
+            colors: <Color>[Colors.blue[900]!, Colors.blue[700]!],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -38,7 +36,7 @@ class LoginButton extends StatelessWidget {
           style: TextStyle(
             fontSize: 16.0,
             fontWeight: FontWeight.bold,
-            color: Colors.white, // White text
+            color: Colors.white,
           ),
         ),
       ),

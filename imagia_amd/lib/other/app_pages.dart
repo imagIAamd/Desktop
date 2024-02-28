@@ -1,0 +1,5 @@
+
+enum AppPages {
+  Home,
+  Connected
+}
