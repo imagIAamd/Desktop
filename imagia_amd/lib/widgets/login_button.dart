@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:imagia_amd/other/app_pages.dart';
 import 'package:imagia_amd/other/appdata.dart';
+import 'package:imagia_amd/other/user.dart';
 import 'package:imagia_amd/widgets/base_text_field.dart';
 import 'package:provider/provider.dart';
 
@@ -41,6 +42,9 @@ class LoginButton extends StatelessWidget {
         ),
       ),
       onTap: () {
+        appData.listUsers.add(User("pepe", "Premium"));
+        appData.listUsers.add(User("Jaimito", "Free"));
+
         appData.setInfo(
             _controllerUrl.text, controllerUser.text, controllerPasswd.text);
         appData.saveURL();

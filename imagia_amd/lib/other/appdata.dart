@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:imagia_amd/other/app_pages.dart';
+import 'package:imagia_amd/other/user.dart';
 
 class AppData with ChangeNotifier {
   //Variables
@@ -16,6 +17,7 @@ class AppData with ChangeNotifier {
   bool isCharging = false;
   bool isInvalid = false;
   AppPages currentPage = AppPages.Home;
+  List<User> listUsers = [];
 
   //NotifyListeners des d'un altre arxiu
   void doNotifyListeners() {
@@ -75,12 +77,12 @@ class AppData with ChangeNotifier {
       notifyListeners();
       return;
     }
-    loadHttpPostByChunks(url, user, passwd);
+    loginHttpPostByChunks(url, user, passwd);
     notifyListeners();
   }
 
-  //Fer un POST
-  Future<void> loadHttpPostByChunks(
+  //Fer login amb POST
+  Future<void> loginHttpPostByChunks(
       String link, String User, String Passwd) async {
     isCharging = true;
 
@@ -93,13 +95,13 @@ class AppData with ChangeNotifier {
 
       if (response.statusCode == 200) {
         try {
-          Map<String, dynamic> jsonMap = json.decode(response.body);
-          if (jsonMap["status"] == "OK") {
-            currentPage = AppPages.Connected;
-            isInvalid = false;
-          } else {
-            isInvalid = true;
-          }
+          //Map<String, dynamic> jsonMap = json.decode(response.body);
+          //if (jsonMap["status"] == "OK") {
+          currentPage = AppPages.Connected;
+          isInvalid = false;
+          //} else {
+          //  isInvalid = true;
+          //}
         } catch (e) {
           isInvalid = true;
           print("Error --------------------------------");
@@ -117,5 +119,11 @@ class AppData with ChangeNotifier {
       isCharging = false;
       notifyListeners();
     }
+  }
+
+  //Cambiar pla del usuari
+  void changePlan(int userNum, String plan) {
+    listUsers[userNum].plan = "" + plan;
+  
   }
 }
