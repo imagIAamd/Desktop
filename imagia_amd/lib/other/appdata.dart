@@ -14,6 +14,7 @@ class AppData with ChangeNotifier {
   String passwd = "";
   String responseMsn = "";
   String errorMsn = "Connection Error";
+  String authKey = "";
   bool isCharging = false;
   bool isInvalid = false;
   AppPages currentPage = AppPages.Home;
@@ -29,6 +30,12 @@ class AppData with ChangeNotifier {
     url = URL;
     user = USER;
     passwd = Password;
+  }
+
+  //Modificar el pla
+  void changePlan(int id, String plan) {
+    listUsers[id].plan = "" + plan;
+    notifyListeners();
   }
 
   //Funcio per recuperar el url d'un ficher
@@ -88,25 +95,25 @@ class AppData with ChangeNotifier {
 
     try {
       var response = await http.post(
-        Uri.parse(link),
+        Uri.parse(link + "/api/users/login"),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': User, 'password': Passwd}),
       );
 
       if (response.statusCode == 200) {
         try {
-          //Map<String, dynamic> jsonMap = json.decode(response.body);
-          //if (jsonMap["status"] == "OK") {
-          currentPage = AppPages.Connected;
-          isInvalid = false;
-          //} else {
-          //  isInvalid = true;
-          //}
+          Map<String, dynamic> jsonMap = json.decode(response.body);
+          if (jsonMap["status"] == "OK") {
+            authKey = jsonMap["data"]["api_key"];
+            currentPage = AppPages.Connected;
+            isInvalid = false;
+          } else {
+            isInvalid = true;
+          }
         } catch (e) {
           isInvalid = true;
-          print("Error --------------------------------");
-          print(e);
-          print("-------------------------------------");
+          print(
+              "Error --------------------------------\n$e\n-------------------------------------");
         }
       } else {
         isInvalid = true;
@@ -121,9 +128,80 @@ class AppData with ChangeNotifier {
     }
   }
 
-  //Cambiar pla del usuari
-  void changePlan(int userNum, String plan) {
-    listUsers[userNum].plan = "" + plan;
-  
+  Future<void> sendChangePlanMsn(String User, String newPlan, int id) async {
+    isCharging = true;
+
+    try {
+      var response = await http.post(
+        Uri.parse(url + "/api/users/admin_change_plan"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $authKey'
+        },
+        body: jsonEncode({'nickname': User, 'pla': newPlan}),
+      );
+
+      if (response.statusCode == 200) {
+        try {
+          Map<String, dynamic> jsonMap = json.decode(response.body);
+          if (jsonMap["status"] == "OK") {
+            changePlan(id, newPlan);
+            isCharging = false;
+          } else {
+            isCharging = false;
+          }
+        } catch (e) {
+          print(
+              "Error --------------------------------\n$e\n-------------------------------------");
+        }
+      } else {
+        throw "Error del servidor (appData/loadHttpPostByChunks): ${response.reasonPhrase}";
+      }
+    } catch (e) {
+      throw "Excepción (appData/loadHttpPostByChunks): $e";
+    } finally {
+      isCharging = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> sendGetUsersRequest() async {
+    isCharging = true;
+
+    try {
+      var response = await http.post(
+        Uri.parse(url + "/api/users/admin_obtain_list"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $authKey'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        try {
+          Map<String, dynamic> jsonMap = json.decode(response.body);
+          if (jsonMap["status"] == "OK") {
+            List<dynamic> data = jsonMap["data"];
+            for (var d in data) {
+              User user = User(d["nickname"], d["pla"]);
+              listUsers.add(user);
+            }
+            isCharging = false;
+          } else {
+            isCharging = false;
+          }
+        } catch (e) {
+          print(
+              "Error --------------------------------\n$e\n-------------------------------------");
+        }
+      } else {
+        throw "Error del servidor (appData/loadHttpPostByChunks): ${response.reasonPhrase}";
+      }
+    } catch (e) {
+      throw "Excepción (appData/loadHttpPostByChunks): $e";
+    } finally {
+      isCharging = false;
+      notifyListeners();
+    }
   }
 }
