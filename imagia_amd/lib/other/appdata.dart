@@ -105,6 +105,7 @@ class AppData with ChangeNotifier {
           Map<String, dynamic> jsonMap = json.decode(response.body);
           if (jsonMap["status"] == "OK") {
             authKey = jsonMap["data"]["api_key"];
+            sendGetUsersRequest();
             currentPage = AppPages.Connected;
             isInvalid = false;
           } else {
@@ -128,7 +129,7 @@ class AppData with ChangeNotifier {
     }
   }
 
-  Future<void> sendChangePlanMsn(String User, String newPlan, int id) async {
+  Future<void> sendChangePlanMsn(int id, String newPlan) async {
     isCharging = true;
 
     try {
@@ -138,7 +139,7 @@ class AppData with ChangeNotifier {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $authKey'
         },
-        body: jsonEncode({'nickname': User, 'pla': newPlan}),
+        body: jsonEncode({'nickname': listUsers[id].name, 'pla': newPlan}),
       );
 
       if (response.statusCode == 200) {
