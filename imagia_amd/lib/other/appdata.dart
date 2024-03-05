@@ -95,7 +95,7 @@ class AppData with ChangeNotifier {
 
     try {
       var response = await http.post(
-        Uri.parse(link + "/api/users/login"),
+        Uri.parse(link + "/api/maria/user/login"),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': User, 'password': Passwd}),
       );
@@ -104,7 +104,7 @@ class AppData with ChangeNotifier {
         try {
           Map<String, dynamic> jsonMap = json.decode(response.body);
           if (jsonMap["status"] == "OK") {
-            authKey = jsonMap["data"]["api_key"];
+            authKey = jsonMap["data"]["access_key"];
             sendGetUsersRequest();
             currentPage = AppPages.Connected;
             isInvalid = false;
@@ -134,12 +134,12 @@ class AppData with ChangeNotifier {
 
     try {
       var response = await http.post(
-        Uri.parse(url + "/api/users/admin_change_plan"),
+        Uri.parse(url + "/api/maria/user/admin_change_plan"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $authKey'
         },
-        body: jsonEncode({'nickname': listUsers[id].name, 'pla': newPlan}),
+        body: jsonEncode({'telefon': listUsers[id].telefon,'nickname': listUsers[id].name, 'pla': newPlan}),
       );
 
       if (response.statusCode == 200) {
@@ -170,8 +170,8 @@ class AppData with ChangeNotifier {
     isCharging = true;
 
     try {
-      var response = await http.post(
-        Uri.parse(url + "/api/users/admin_obtain_list"),
+      var response = await http.get(
+        Uri.parse(url + "/api/maria/user/admin_obtain_list"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $authKey'
@@ -184,7 +184,7 @@ class AppData with ChangeNotifier {
           if (jsonMap["status"] == "OK") {
             List<dynamic> data = jsonMap["data"];
             for (var d in data) {
-              User user = User(d["nickname"], d["pla"]);
+              User user = User(d["telefon"],d["nickname"], d["pla"]);
               listUsers.add(user);
             }
             isCharging = false;
