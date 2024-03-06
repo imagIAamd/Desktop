@@ -131,6 +131,7 @@ class AppData with ChangeNotifier {
 
   Future<void> sendChangePlanMsn(int id, String newPlan) async {
     isCharging = true;
+    notifyListeners();
 
     try {
       var response = await http.post(
@@ -139,7 +140,11 @@ class AppData with ChangeNotifier {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $authKey'
         },
-        body: jsonEncode({'telefon': listUsers[id].telefon,'nickname': listUsers[id].name, 'pla': newPlan}),
+        body: jsonEncode({
+          'phone_number': listUsers[id].telefon,
+          'nickname': listUsers[id].name,
+          'plan': newPlan
+        }),
       );
 
       if (response.statusCode == 200) {
@@ -168,10 +173,11 @@ class AppData with ChangeNotifier {
 
   Future<void> sendGetUsersRequest() async {
     isCharging = true;
+    notifyListeners();
 
     try {
       var response = await http.get(
-        Uri.parse(url + "/api/maria/user/admin_obtain_list"),
+        Uri.parse(url + "/api/maria/user/admin_get_list"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $authKey'
@@ -184,7 +190,7 @@ class AppData with ChangeNotifier {
           if (jsonMap["status"] == "OK") {
             List<dynamic> data = jsonMap["data"];
             for (var d in data) {
-              User user = User(d["telefon"],d["nickname"], d["pla"]);
+              User user = User(d["phone_number"], d["nickname"], d["plan"]);
               listUsers.add(user);
             }
             isCharging = false;

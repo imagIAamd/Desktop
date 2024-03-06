@@ -37,7 +37,7 @@ class Connected extends StatelessWidget {
       child: ListView.builder(
           itemCount: appData.listUsers.length,
           itemBuilder: (context, index) {
-            Color c = appData.listUsers[index].plan == "Premium"
+            Color c = appData.listUsers[index].plan == "premium"
                 ? Color.fromARGB(255, 161, 137, 0)
                 : const Color.fromARGB(255, 20, 20, 20);
 
@@ -106,7 +106,7 @@ AlertDialog showAlertDialog(int id, AppData data, BuildContext context) {
           child: Text("Free")),
       ElevatedButton(
           onPressed: () {
-            data.sendChangePlanMsn(id, "Premium");
+            data.sendChangePlanMsn(id, "premium");
             Navigator.of(context).pop();
           },
           child: Text("Premium")),
@@ -122,7 +122,7 @@ AlertDialog showAlertDialog(int id, AppData data, BuildContext context) {
         Text("? Actualment té el pla "),
         Text("${data.listUsers[id].plan}",
             style: TextStyle(
-                color: data.listUsers[id].plan == "Premium"
+                color: data.listUsers[id].plan == "premium"
                     ? Color.fromARGB(255, 161, 137, 0)
                     : const Color.fromARGB(255, 20, 20, 20)))
       ],
