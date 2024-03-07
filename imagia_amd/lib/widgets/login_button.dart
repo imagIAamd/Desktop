@@ -42,6 +42,7 @@ class LoginButton extends StatelessWidget {
         ),
       ),
       onTap: () {
+        appData.listUsers.clear();
         appData.setInfo(
             _controllerUrl.text, controllerUser.text, controllerPasswd.text);
         appData.saveURL();
