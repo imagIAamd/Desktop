@@ -100,7 +100,7 @@ AlertDialog showAlertDialog(int id, AppData data, BuildContext context) {
     actions: [
       ElevatedButton(
           onPressed: () {
-            data.sendChangePlanMsn(id, "Free");
+            data.sendChangePlanMsn(id, "free");
             Navigator.of(context).pop();
           },
           child: Text("Free")),
